@@ -10,14 +10,14 @@ def get_first_player(pbp_url):
     first_player = soup.find_all('a', limit = 3)[2]
     return first_player['href']
 
-#get the team with posession after tip
+#get a player's team
 def get_team(player_url):
     r = requests.get('http://www.basketball-reference.com{}'.format(player_url))
     strainer = SoupStrainer('div', attrs={"itemtype" : "http://schema.org/Person"})
     soup = BeautifulSoup(r.content, 'lxml', parse_only = strainer)
     first_team = soup.find_all('a', limit = 3)[2]
     return first_team['href']
-    
+
 def main():
     one_day = timedelta(days = 1)
     opening_day = date(2016, 10, 25)
