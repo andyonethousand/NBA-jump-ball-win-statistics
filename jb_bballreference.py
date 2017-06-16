@@ -24,7 +24,7 @@ def main():
     last_day = date(2017, 4, 12)
 
     total_games = 0
-    jb_winners = 0
+    wins = 0
 
     startTime = datetime.now()
 
@@ -45,13 +45,14 @@ def main():
             winner = game.find(class_ = 'winner').find('a')['href']
 
             if first_team == winner:
-                jb_winners += 1
+                wins += 1
 
         opening_day += one_day
 
-    print('total games calculated: {}'.format(total_games))
-    print('total jb winners: {}'.format(jb_winners))
-    print(jb_winners/total_games)
+    print('')
+    print('Total games calculated: {}'.format(total_games))
+    print('Teams that win the jumpball were {} - {}.'.format(wins, total_games-wins))
+    print('A winning % of: {}'.format(wins/total_games))
 
     print(datetime.now() - startTime)
 
