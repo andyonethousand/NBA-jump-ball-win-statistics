@@ -20,23 +20,23 @@ def get_team(player_url):
 
 def main():
     one_day = timedelta(days = 1)
-    opening_day = date(2016, 10, 25)
-    last_day = date(2017, 4, 12)
+    curr_day = date(2016, 10, 25)
+    last_day = date(2016, 11, 12)
 
     total_games = 0
     wins = 0
 
     startTime = datetime.now()
 
-    while opening_day <= last_day:
-        r = requests.get('http://www.basketball-reference.com/boxscores/?month={m}&day={d}&year={y}'.format(m = opening_day.month, d = opening_day.day, y = opening_day.year))
+    while curr_day <= last_day:
+        r = requests.get('http://www.basketball-reference.com/boxscores/?month={m}&day={d}&year={y}'.format(m = curr_day.month, d = curr_day.day, y = curr_day.year))
 
         strainer = SoupStrainer('div', class_ = 'game_summary expanded nohover')
         soup = BeautifulSoup(r.content, 'lxml', parse_only = strainer)
         games = soup.contents[1:]
 
         total_games += len(games)
-        print(opening_day)
+        print(curr_day)
 
         for game in games:
             pbp_url = game.find(class_ = 'links').find_all('a', limit = 2)[1]['href']
@@ -44,10 +44,12 @@ def main():
             first_team = get_team(get_first_player(pbp_url))
             winner = game.find(class_ = 'winner').find('a')['href']
 
+            print(first_team + ' : ' + winner)
+
             if first_team == winner:
                 wins += 1
 
-        opening_day += one_day
+        curr_day += one_day
 
     print('')
     print('Total games calculated: {}'.format(total_games))
